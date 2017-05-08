@@ -919,15 +919,11 @@ function createLegend(mymap, attributes){
 
 // updates the temporal legend with new content
 function updateLegend(mymap, attribute){
-
 	var year = attribute.split("_").pop(); // split on the 3rd _
-
   var eventType = attribute.split("_")[0] + " "; //
-
-	if (attribute.split("_")[1] !== year) {
+	if (attribute.split("_")[1] !== year && attribute.split("_")[1] !== "Events") {
 		eventType = attribute.split("_")[0] + " " + attribute.split("_")[1] + " ";
 	}
-
   // content to be added to the legend
   var legendContent = "<b>Number of " + eventType + "Events in " + year + ".</b>";
 
@@ -1108,8 +1104,8 @@ function updatePropSymbols(mymap, attribute){
         mouseout: function(){
           this.closePopup();
         },
-        click: function(){
-						// click content
+        click: function(e){
+						clickZoom(e);
         },
 
       }); // close to layer.on
