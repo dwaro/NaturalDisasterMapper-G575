@@ -683,6 +683,13 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 	createPropSymbols(state_eventsJSON, county_eventsJSON, mymap, attributes);
 	createSequenceControls(mymap, attributes);
 	createLegend(mymap, attributes);
+	activeLayer = allLayers.stateTotalEventsLayer;
+	mymap.eachLayer(function (layer) {
+			mymap.removeLayer(layer);
+	});
+	baseLayers(mymap);
+	mymap.addLayer(activeLayer);
+	attributes = processData(state_eventsJSON, activeField);
 	sauce = $('.range-slider').val();
 	updateLegend(mymap, attributes[sauce]);
 	updatePropSymbols(mymap, attributes[sauce]);
@@ -1179,6 +1186,7 @@ function createPropSymbols(state_eventsJSON, county_eventsJSON, mymap, attribute
   search(mymap, proportionalSymbols, countySymbols);
 //removes county symbols because we only want to display the states at map initialization
 	mymap.removeLayer(countySymbols);
+	
 
 }; // close to createPropSymbols
 
