@@ -693,6 +693,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 	createPropSymbols(state_eventsJSON, county_eventsJSON, mymap, attributes);
 	createSequenceControls(mymap, attributes);
 	createLegend(mymap, attributes);
+
 	activeLayer = allLayers.stateTotalEventsLayer;
 	mymap.eachLayer(function (layer) {
 			mymap.removeLayer(layer);
@@ -700,17 +701,13 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 	baseLayers(mymap);
 	mymap.addLayer(activeLayer);
 	attributes = processData(state_eventsJSON, activeField);
+
 	sauce = $('.range-slider').val();
 	updateLegend(mymap, attributes[sauce]);
 	updatePropSymbols(mymap, attributes[sauce]);
 //function to switch county and state values based on zoom level
-<<<<<<< HEAD
 
 
-	//function to switch county and state values based on zoom level
-
-=======
->>>>>>> dwaro/master
 	mymap.on('zoomend', function(){
 		if (activeField == "Total_Events" && mymap.getZoom() < 6) {
 				activeLayer = allLayers.stateTotalEventsLayer;
@@ -1199,7 +1196,7 @@ function createPropSymbols(state_eventsJSON, county_eventsJSON, mymap, attribute
   search(mymap, proportionalSymbols, countySymbols);
 //removes county symbols because we only want to display the states at map initialization
 	mymap.removeLayer(countySymbols);
-	
+
 
 }; // close to createPropSymbols
 
@@ -1347,7 +1344,7 @@ function stateGraph(csvData){
         .scale(x);
     var yAxis = d3.axisLeft()
         .scale(y);
-  
+
     // Adding the scales to the chart.
     vis.append("svg:g")
         .attr("transform", 'translate(27,' + (height-20).toString() + ')')
@@ -1355,13 +1352,13 @@ function stateGraph(csvData){
     vis.append("svg:g")
         .attr("transform", 'translate(27, 6)')
         .call(yAxis);
-    
+
     //create label for tooltip
     var tooltip = d3.select('#section-1')
         .append('div')
         .attr('class', 'tooltip')
         .style('opacity', 0);
-    
+
     var lines = vis.selectAll('.lines')
         .attr('transform', 'translate(28,6)')
         .append('polyline')
@@ -1378,7 +1375,7 @@ function stateGraph(csvData){
         .on("mouseout", function(){
             d3.select('#'+ (this.id).toString())
                 .style("stroke-width", "3.5");
-            d3.select('.tooltip')      
+            d3.select('.tooltip')
                 .style("opacity", 0);
         });
 
@@ -1461,8 +1458,8 @@ function stateGraph(csvData){
             d3.select('.tooltip')
                 .style("opacity", 0);
         });
-    */    
-    
+    */
+
     updateStateGraph(lines, csvData, title);
     /*
     $('#total-events').on('click', function(){
