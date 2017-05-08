@@ -60,6 +60,12 @@ body {
 #information-area p{
   font-family: georgia;
 }
+footer {
+  position: absolute;
+  font-size: 12px;
+  left: 5px;
+  top: 1880px;
+}
 
 #tabBar {
   position: absolute;
@@ -346,7 +352,7 @@ body {
     stroke-width: 3.5;
     fill: none;
 }
-<<<<<<< Updated upstream
+
 .tooltip {
   position: absolute;
   text-align: center;
@@ -357,7 +363,7 @@ body {
   background: lightsteelblue;
   border: 0px;
   border-radius: 8px;
-=======
+
 
 .tooltip {
   position: absolute;
@@ -383,17 +389,10 @@ body {
   top: -2px;
   padding: 0px;
   font: 14px verdana sans-serif;
->>>>>>> Stashed changes
+
   pointer-events: none;
 }
 
 .leaflet-popup-content p {
   margin:  0.2em 0;
-}
-
-footer {
-  position: absolute;
-  font-size: 12px;
-  left: 5px;
-  top: 1873px;
 }
