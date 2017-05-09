@@ -1,0 +1,52 @@
+<html>
+      <head>
+        <meta charset="UTF-8">
+        <title>README.md</title>
+      </head>
+      <body>
+        <h1 id="leaflet-navbar">Leaflet.NavBar</h1>
+<p>Simple navigation toolbar for Leaflet.</p>
+<p>Demo: <a href="http://davidchouse.github.io/Leaflet.NavBar/">http://davidchouse.github.io/Leaflet.NavBar/</a></p>
+<p><img src="./screenshot.png" alt="Leaflet.NavBar Screenshot"></p>
+<h2 id="install-via-bower">Install via Bower</h2>
+<pre><code class="lang-js">bower install leaflet-navbar
+</code></pre>
+<p><a name="using" /></p>
+<h2 id="using-the-plugin">Using the plugin</h2>
+<p>The default state for the control is just below the zoom control. This will allow map users to navigate forward and back in the map&#39;s view history as well as navigate to a home view.</p>
+<pre><code class="lang-js">L.control.navbar().addTo(map);
+</code></pre>
+<p>Options for initialising the Leaflet.NavBar control.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>position</td>
+<td>String</td>
+<td><code>&#39;topleft&#39;</code></td>
+<td>The initial position of the control.</td>
+</tr>
+<tr>
+<td>center</td>
+<td><code>L.LatLng</code></td>
+<td>Map&#39;s Current Position</td>
+<td>The center point for the home view.</td>
+</tr>
+<tr>
+<td>zoom</td>
+<td>Number</td>
+<td><code>0</code></td>
+<td>The zoom value for the home view.</td>
+</tr>
+</tbody>
+</table>
+
+      </body>
+    </html>

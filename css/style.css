@@ -186,7 +186,7 @@ body {
 }
 
 .dropdown {
-    float: left;
+    left: 50px;
     overflow: hidden;
     top: 10px;
     width: auto;
@@ -435,14 +435,23 @@ body {
     fill: none;
 }
 
+.lines1 {
+    stroke-width: 3.5;
+    fill: none;
+}
+
 .tooltip {
   position: absolute;
   text-align: center;
-  content: normal;
   width: 150px;
-  height: 20px;
+  height: 28px;
   padding: 2px;
+  font: 14px sans-serif;
+  font-weight: bold;
+  top: 70px;
+  left: 67px;
 }
+
 
 .leaflet-popup-content p {
   margin:  0.2em 0;
