@@ -46,8 +46,9 @@ function getData(mymap) {
 // callback for data viz
 function callback(error, csvData, county_eventsCSV, state_eventsJSON, county_eventsJSON){
     createMap(state_eventsJSON, county_eventsJSON, csvData, county_eventsCSV);
-    stateGraph(csvData);
+    stateGraph(csvData, county_eventsCSV);
     //countyGraph(csvData, county_eventsCSV, 'Amador')
+    createDropdown(csvData, county_eventsCSV);
 };
 
 
@@ -480,7 +481,6 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 			sauce = $('.range-slider').val();
 			updateLegend(mymap, attributes[sauce]);
 			updatePropSymbols(mymap, attributes[sauce]);
-            stateGraph(csvData);
 		} else if (mymap.getZoom() >= 6) {
 				activeLayer = allLayers.countyTotalEventsLayer;
 				activeField = "Total_Events";
@@ -495,6 +495,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#avalanches").on("click", function(e) {
@@ -524,6 +525,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#blizzards").on("click", function(e) {
@@ -556,6 +558,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#droughts").on("click", function(e) {
@@ -585,6 +588,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#excessive-heat").on("click", function(e) {
@@ -614,6 +618,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#extreme-cold").on("click", function(e) {
@@ -643,6 +648,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#tornado").on("click", function(e) {
@@ -672,6 +678,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	$("#wildfire").on("click", function(e) {
@@ -701,6 +708,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				updatePropSymbols(mymap, attributes[sauce]);
 		}
         stateGraph(csvData);
+        createDropdown(csvData, county_eventsCSV);
 	});
 
 	activeField = "Total_Events";
@@ -1345,11 +1353,48 @@ function Popup(properties, layer, radius){
 }; // close to Popup function
 
 
-function countyGraph(csvData, county_eventsCSV, county){
-    $('.chart').fadeOut(1000);
-    $('.lines').fadeOut(1000);
-    $('.title').fadeOut(1000);
+function createDropdown(csvData, county_eventsCSV){
+    var attrArray =[];
+        for (var j = 0; j < county_eventsCSV.length; j++){
+            attrArray.push(county_eventsCSV[j]['County']);
+        }
     
+    console.log['Yuma'.indexOf];
+    //add select element
+    var dropdown = d3.select("#section-1")
+        .append("select")
+        .style('position', 'absolute')
+        .style('top', 0)
+        .style('left', '15px')
+        //.attr("class", "dropdown")
+        .on("change", function(){
+            countyGraph(csvData, county_eventsCSV, this.value);
+        });
+    
+    //add initial option
+    var titleOption = dropdown.append("option")
+        .attr("class", "titleOption")
+        .attr("disabled", "true")
+        .text("Select a County for its Individual Graph");
+    
+    //add attr name options
+    var attrOptions = dropdown.selectAll("attrOptions")
+        .data(attrArray)
+        .enter()
+        .append("option")
+        .attr("value", function(d){ return d })
+        .text(function(d){ return d + " " + county_eventsCSV[attrArray.indexOf(d)]['State'] });
+           
+
+}
+
+function countyGraph(csvData, county_eventsCSV, county){
+    $('.chart').fadeIn(1000);
+    $('.lines').fadeIn(1000);
+    $('.title').fadeIn(1000);
+    
+    //county = createDropdown(csvData, county_eventsCSV, county);
+        
     var title1 = d3.select('#section-1')
         .html('<br>' + activeField + ' By County</br>2000-2016')
         .attr('class', 'title1')
@@ -1507,29 +1552,24 @@ function countyGraph(csvData, county_eventsCSV, county){
 }
 
 // create graph for the initial state view
-function stateGraph(csvData){
+function stateGraph(csvData, county_eventsCSV){
     //chart title
     $('.lines').fadeOut(1000);
     $('.lines1').fadeOut(1000);
     $('.chart1').fadeOut(1000);
     $('.title1').fadeOut(1000);
-    
-    //chart title
     $('.lines').fadeOut(1000);
-		if (activeField == "Total_Events") {
-			activeField = "Total Events";
-		} else if (activeField == "Excessive_Heat") {
-			activeField = "Excessive Heat";
-		} else if (activeField == "Extreme_Cold") {
-			activeField = "Extreme Cold";
-		};
+    
+    //createDropdown(csvData, county_eventsCSV);
+    
+    //title
     var title = d3.select('#section-1')
         .html('<br><b>' + activeField + ' By State</br>2000-2016</b>')
-        .attr('class','title)
+        .attr('class','title')
         .style('font-family', 'Helvetica, sans-serif')
         .style('text-align', 'center')
         .style('font-weight', 'bold');
-              
+      
     $('.title').fadeIn(1000);
 
     // svg to contain chart
@@ -1556,7 +1596,7 @@ function stateGraph(csvData){
     vis.append("svg:g")
         .attr("transform", 'translate(27, 6)')
         .call(yAxis);
-
+    console.log(activeField);
     for (var row = 0; row < csvData.length; row++){
         var lines = vis.append('polyline')
             .attr('points', (x(2000)).toString() + ',' + (y(csvData[row][activeField.toString() + '_2000'])).toString() + ',' +

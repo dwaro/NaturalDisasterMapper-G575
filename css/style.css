@@ -186,7 +186,7 @@ body {
 }
 
 .dropdown {
-    float: left;
+    left: 50px;
     overflow: hidden;
     top: 10px;
     width: auto;
