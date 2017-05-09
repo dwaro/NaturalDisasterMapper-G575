@@ -21,11 +21,12 @@ var attributes;
 var sauce;
 var mymap;
 //chart width and height
-var width = 310;//window.innerWidth * 0.15;
-var height = 175;//window.innerWidth * 0.15;
+
+var width = 310;
+var height = 175;
 //scales
 var x = d3.scaleLinear()
-    .range([0, width-74])
+    .range([0, width -74])
     .domain([2000, 2016]);
 var y = d3.scaleLinear()
     .range([0, height-27])
@@ -41,7 +42,6 @@ function getData(mymap) {
 			.defer(d3.json, "data/county_events.geojson")
 			.await(callback);
 }; // close to getData
-
 
 // callback for data viz
 function callback(error, csvData, county_eventsCSV, state_eventsJSON, county_eventsJSON){
@@ -152,6 +152,7 @@ function layers(mymap,state_eventsJSON, county_eventsJSON, csvData, county_event
 		//pointToLayer is used to change the marker features to circle markers,
 		pointToLayer: function (feature, latlng) {
 			return L.circleMarker (latlng, geojsonMarkerOptions);
+			// event listeners to open popup on hover
 		}
 	});
 
@@ -476,7 +477,10 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 			baseLayers(mymap);
 			mymap.addLayer(activeLayer);
 			attributes = processData(state_eventsJSON, activeField);
+			sauce = $('.range-slider').val();
 			updateLegend(mymap, attributes[sauce]);
+			updatePropSymbols(mymap, attributes[sauce]);
+            stateGraph(csvData);
 		} else if (mymap.getZoom() >= 6) {
 				activeLayer = allLayers.countyTotalEventsLayer;
 				activeField = "Total_Events";
@@ -523,6 +527,8 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 	});
 
 	$("#blizzards").on("click", function(e) {
+
+		console.log(mymap.getZoom());
 		if (mymap.getZoom() < 6) {
 			activeLayer = allLayers.stateBlizzardsLayer;
 			activeField = "Blizzard";
@@ -532,7 +538,10 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 			baseLayers(mymap);
 			mymap.addLayer(activeLayer);
 			attributes = processData(state_eventsJSON, activeField);
+			sauce = $('.range-slider').val();
 			updateLegend(mymap, attributes[sauce]);
+			updatePropSymbols(mymap, attributes[sauce]);
+            stateGraph(csvData);
 		} else if (mymap.getZoom() >= 6) {
 				activeLayer = allLayers.countyBlizzardsLayer;
 				activeField = "Blizzard";
@@ -696,15 +705,23 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 
 	activeField = "Total_Events";
 	// creating an array of attributes
-	attributes = processData(state_eventsJSON, activeField);
 	activeLayer = allLayers.stateTotalEventsLayer;
+	attributes = processData(state_eventsJSON, activeField);
 	// call function to create proportional symbols
 	createPropSymbols(state_eventsJSON, county_eventsJSON, mymap, attributes);
 	createSequenceControls(mymap, attributes);
 	createLegend(mymap, attributes);
-	sauce = $('.range-slider').val();
-	updateLegend(mymap, attributes[sauce]);
-	updatePropSymbols(mymap, attributes[sauce]);
+
+	mymap.eachLayer(function (layer) {
+ 		 mymap.removeLayer(layer);
+  });
+  baseLayers(mymap);
+  mymap.addLayer(activeLayer);
+  attributes = processData(state_eventsJSON, activeField);
+  sauce = $('.range-slider').val();
+  updateLegend(mymap, attributes[sauce]);
+  updatePropSymbols(mymap, attributes[sauce]);
+
 
 	//function to switch county and state values based on zoom level
 	mymap.on('zoomend', function(){
@@ -714,6 +731,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 						mymap.removeLayer(layer);
 				});
 				baseLayers(mymap);
+				console.log("1111");
 				mymap.addLayer(activeLayer);
 				attributes = processData(state_eventsJSON, activeField);
 				sauce = $('.range-slider').val();
@@ -726,12 +744,13 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				});
 				baseLayers(mymap);
 				mymap.addLayer(activeLayer);
+				console.log("2222");
 				attributes = processData(county_eventsJSON, activeField);
 				sauce = $('.range-slider').val();
 				updateLegend(mymap, attributes[sauce]);
 				updatePropSymbols(mymap, attributes[sauce]);
 
-		}else if (activeField == "Avalanche" && mymap.getZoom() < 6) {
+		} else if (activeField == "Avalanche" && mymap.getZoom() < 6) {
 				activeLayer = allLayers.stateAvalanchesLayer;
 				mymap.eachLayer(function (layer) {
 						mymap.removeLayer(layer);
@@ -753,7 +772,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				sauce = $('.range-slider').val();
 				updateLegend(mymap, attributes[sauce]);
 				updatePropSymbols(mymap, attributes[sauce]);
-		}else if (activeField == "Blizzard" && mymap.getZoom() < 6) {
+		} else if (activeField == "Blizzard" && mymap.getZoom() < 6) {
 				activeLayer = allLayers.stateBlizzardsLayer;
 				mymap.eachLayer(function (layer) {
 						mymap.removeLayer(layer);
@@ -775,7 +794,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				sauce = $('.range-slider').val();
 				updateLegend(mymap, attributes[sauce]);
 				updatePropSymbols(mymap, attributes[sauce]);
-		}else if (activeField == "Drought" && mymap.getZoom() < 6) {
+		} else if (activeField == "Drought" && mymap.getZoom() < 6) {
 				activeLayer = allLayers.stateDroughtsLayer;
 				mymap.eachLayer(function (layer) {
 						mymap.removeLayer(layer);
@@ -797,7 +816,7 @@ allLayers.stateWildfiresLayer = L.geoJson(state_eventsJSON, {
 				sauce = $('.range-slider').val();
 				updateLegend(mymap, attributes[sauce]);
 				updatePropSymbols(mymap, attributes[sauce]);
-		}else if (activeField == "Excessive_Heat" && mymap.getZoom() < 6) {
+		} else if (activeField == "Excessive_Heat" && mymap.getZoom() < 6) {
 				activeLayer = allLayers.stateExcessiveHeatLayer;
 				mymap.eachLayer(function (layer) {
 						mymap.removeLayer(layer);
@@ -1102,11 +1121,10 @@ function updatePropSymbols(mymap, attribute){
   mymap.eachLayer(function(layer){
     // if the layer contains both the layer feature and properties with attributes
     if (layer.feature && layer.feature.properties[attribute]){
-      // access feature properties
+			// access feature properties
+
       var props = layer.feature.properties;
 
-      // subtract one because all pop growths will be at 1._ _ attributes, so we
-      // want more variation
       var attValue = Number(props[attribute]);
       // radius
       var radius = calcPropRadius(attValue);
@@ -1126,10 +1144,11 @@ function updatePropSymbols(mymap, attribute){
         },
         click: function(e){
             clickZoom(e);
-        },
+        }
 
       }); // close to layer.on
-    }; // close to if statement
+    }
+		// close to if statement
   }); // close to eachLayer function
   updateLegend(mymap, attribute); // update the temporal-legend
 }; // close to updatePropSymbols function
@@ -1204,13 +1223,12 @@ function createPropSymbols(state_eventsJSON, county_eventsJSON, mymap, attribute
 
 
 function clickZoom(e) {
-	console.log("click function not working");
-    console.log('hello:'+ e.target.feature.properties['Location']);
+  console.log(e.target.feature.properties['Location']);
 	if (mymap.getZoom() < 6) {
         mymap.setView(e.target.getLatLng(), 6);
 	} else {
 		mymap.setView(e.target.getLatLng(), 8);
-        //countyGraph(csvData, county_eventsCSV, e.target.feature.properties['Location']);
+    //countyGraph(csvData, county_eventsCSV, e.target.feature.properties['Location']);
 	}
 };
 
@@ -1258,35 +1276,33 @@ function pointToLayer(feature, latlng, attributes){
     opacity: 1,
     fillOpacity: 0.8
   };
-
+		var layer = L.circleMarker(latlng, options);
   // For each feature, determine its value for the selected attribute
   var attValue = Number(feature.properties[attribute]);
-
   // calculate the radius and assign it to the radius of the options marker.
   // Multiplied by 10
-  options.radius = calcPropRadius(attValue);
-
+	var radius = calcPropRadius(attValue);
+	layer.setRadius(radius);
   // assign the marker with the options styling and using the latlng repsectively
-  var layer = L.circleMarker(latlng, options);
 
+var props = feature.properties;
 	// creates a new popup object
-  var popup = new Popup(feature.properties, layer, options.radius);
+	var popup = new Popup(props, layer, radius);
+	//add popup to circle marker
+	popup.bindToLayer();
+	//event listeners to open popup on hover
+	layer.on({
+		mouseover: function(){
+			this.openPopup();
+		},
+		mouseout: function(){
+			this.closePopup();
+		},
+		click: function(e){
+				clickZoom(e);
+		}
 
-  // add popup to circle marker
-  popup.bindToLayer();
-
-  // event listeners to open popup on hover
-  layer.on({
-      mouseover: function(){
-          this.openPopup();
-      },
-      mouseout: function(){
-          this.closePopup();
-      },
-      click: function(e){
-          clickZoom(e);
-      }
-  });
+	});
 
   // return the circle marker to the L.geoJson pointToLayer option
   return layer;
@@ -1498,13 +1514,22 @@ function stateGraph(csvData){
     $('.chart1').fadeOut(1000);
     $('.title1').fadeOut(1000);
     
+    //chart title
+    $('.lines').fadeOut(1000);
+		if (activeField == "Total_Events") {
+			activeField = "Total Events";
+		} else if (activeField == "Excessive_Heat") {
+			activeField = "Excessive Heat";
+		} else if (activeField == "Extreme_Cold") {
+			activeField = "Extreme Cold";
+		};
     var title = d3.select('#section-1')
-        .html('<br>' + activeField + ' By State</br>2000-2016')
-        .attr('class', 'title')
+        .html('<br><b>' + activeField + ' By State</br>2000-2016</b>')
+        .attr('class','title)
         .style('font-family', 'Helvetica, sans-serif')
         .style('text-align', 'center')
         .style('font-weight', 'bold');
-    
+              
     $('.title').fadeIn(1000);
 
     // svg to contain chart
@@ -1513,8 +1538,9 @@ function stateGraph(csvData){
         .attr('width', width)
         .attr('height', height)
         .attr("class", "chart");
-    
+  
     $('.chart').fadeIn(1000);
+
 
     //axis
     var xAxis = d3.axisBottom()
@@ -1564,7 +1590,7 @@ function stateGraph(csvData){
                     return '#ff4d4d';
                 }
                 else if (row == 2){
-                    return '#fdc086';
+                    return '#feb24c';
                 }
                 else if (row == 3){
                     return '#ffff99';
@@ -1573,7 +1599,7 @@ function stateGraph(csvData){
                     return 'blue';
                 }
                 else{
-                    return '#386cb0';
+                    return 'turquoise';
                 }
             });
         $('.lines').fadeIn(1000);
