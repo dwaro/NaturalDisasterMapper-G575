@@ -340,53 +340,30 @@ body {
     position: absolute;
     top: 60px;
     left: 3%;
-    width: 275px;
 }
 
 .lines {
     stroke-width: 3.5;
     fill: none;
 }
-<<<<<<< Updated upstream
-.tooltip {
-  position: absolute;
-  text-align: center;
-  width: 60px;
-  height: 28px;
-  padding: 2px;
-  font: 12px sans-serif;
-  background: lightsteelblue;
-  border: 0px;
-  border-radius: 8px;
-=======
 
-.tooltip {
-  position: absolute;
-  text-align: center;
-  content: normal;
-  width: 80px;
-  height: 40px;
-  left: 70px;
-  padding: 0px;
-  line-height: 1px;
-  font: 14px verdana sans-serif;
-  border: solid;
-  border-width: 1px;
-  pointer-events: none;
+.lines1 {
+    stroke-width: 3.5;
+    fill: none;
 }
 
-.tooltip p {
+.tooltip {
   position: absolute;
   text-align: center;
   width: 150px;
-  height: 40px;
-  left: -40px;
-  top: -2px;
-  padding: 0px;
-  font: 14px verdana sans-serif;
->>>>>>> Stashed changes
-  pointer-events: none;
+  height: 28px;
+  padding: 2px;
+  font: 14px sans-serif;
+  font-weight: bold;
+  top: 70px;
+  left: 67px;
 }
+
 
 .leaflet-popup-content p {
   margin:  0.2em 0;
